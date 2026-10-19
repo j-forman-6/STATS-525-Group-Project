@@ -1,23 +1,3 @@
-
-Jack’s MacBook Pro, Connected
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Log · MD
 # Project Log
  
 A running record of **what we did, who did it, and what's still open**.
@@ -65,5 +45,3 @@ When a question gets answered, fill in the decision and date. Don't delete the r
 **Questions / next steps:**
 - Everyone: follow the setup steps in `README.md` and make a test commit to this log
 - Add the dataset to `data/`
- 
-Claude finished the response
