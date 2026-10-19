@@ -65,10 +65,7 @@ project/
 ├── README.md        # this file
 ├── log.md           # running log: date, who, what was done, open questions
 ├── report.qmd       # shared results write-up (text + math + R output)
-├── R/
-│   ├── 01_clean.R   # data cleaning
-│   ├── 02_eda.R     # exploratory plots and summaries
-│   └── 03_models.R  # regression models and diagnostics
+├── R/               # any .r files
 ├── data/            # raw data (never edit by hand)
 ├── output/          # rendered reports and saved figures
 ```
@@ -103,7 +100,7 @@ Run this in the RStudio **Console**, using your own name and the email on your G
 install.packages(c("usethis", "gitcreds", "quarto"))
 usethis::use_git_config(user.name = "Your Name", user.email = "you@email.com")
 usethis::create_github_token()   # opens GitHub in your browser; click Generate, then copy the token
-gitcreds::gitcreds_set()         # paste the token when asked
+gitcreds::gitcreds_set()         # paste the token when asked (type 2)
 ```
  
 > GitHub does **not** accept your account password for pushing. The token is what lets you push.
