@@ -1,0 +1,230 @@
+---
+title: "STAT 525 Group Project: _Project Title_"
+author: "_Name 1_, _Name 2_, _Name 3_"
+date: today
+format:
+  html:
+    toc: true
+    number-sections: true
+    code-fold: true        # code is hidden behind a "Code" button; click to show
+    embed-resources: true  # produces one self-contained HTML file
+execute:
+  warning: false
+  message: false
+---
+
+<!--
+HOW TO USE THIS FILE
+- This is our SHARED pool of results. Each of us writes our own final report later,
+  picking whichever results we want from here.
+- Write text normally. Write math in LaTeX: $\hat\beta_1$ inline, or $$ ... $$ for a display line.
+- Put R code in chunks (Ctrl/Cmd + Alt + I inserts one).
+- Click "Render" in RStudio to build the HTML. Save rendered copies to output/ when useful.
+- Put your name in a section heading's note when you add results, e.g. "(added by Maria)".
+- Code chunks are skipped until the data file exists (see the setup chunk below).
+-->
+
+```{r}
+#| label: setup
+#| include: false
+
+# >>> Change this to our real data file <<<
+data_path <- "data/our_data.csv"
+
+# Until the data file exists, skip running the chunks so the document still renders
+knitr::opts_chunk$set(eval = file.exists(data_path))
+
+# Shared cleaning code lives in R/; uncomment once these scripts exist
+# source("R/01_clean.R")
+```
+
+```{r}
+#| label: load-data
+
+dat <- read.csv(data_path)
+
+# >>> Rename these to our actual variables <<<
+# y   = continuous response
+# x1  = quantitative predictor, x2 = quantitative predictor
+# grp = categorical predictor
+str(dat)
+summary(dat)
+```
+
+# Introduction
+
+**Background:** _What is the dataset about, and why does it matter?_
+
+**Data source:** _Where did the data come from, and how was it collected or sampled?_
+
+**Research question(s):** _What are we trying to answer?_
+
+**Variables:**
+
+| Role | Variable | Type | Description |
+|------|----------|------|-------------|
+| Response $Y$ | `y` | Continuous | _..._ |
+| Predictor $X_1$ | `x1` | Continuous | _..._ |
+| Predictor $X_2$ | `x2` | Continuous | _..._ |
+| Predictor | `grp` | Categorical | _..._ |
+
+# Part A: Data Exploration & Initial Modeling
+
+## Distributions of $Y$ and predictors
+
+```{r}
+#| label: fig-distributions
+#| fig-cap: "Distributions of the response and quantitative predictors."
+
+par(mfrow = c(1, 3))
+hist(dat$y,  main = "Y",  xlab = "y")
+hist(dat$x1, main = "X1", xlab = "x1")
+hist(dat$x2, main = "X2", xlab = "x2")
+```
+
+_Comments on shape, skew, and unusual values._
+
+## Relationships with $Y$
+
+```{r}
+#| label: fig-scatter
+#| fig-cap: "Response versus each quantitative predictor."
+
+par(mfrow = c(1, 2))
+plot(y ~ x1, data = dat)
+plot(y ~ x2, data = dat)
+```
+
+```{r}
+#| label: fig-boxplot
+#| fig-cap: "Response by level of the categorical predictor."
+
+boxplot(y ~ grp, data = dat)
+```
+
+_Comments: linear? curved? does spread change with $X$?_
+
+## Outliers and extreme values
+
+_Which observations look unusual, and do we have a reason to keep or remove them?_
+
+## Transformations
+
+If $Y$ is right-skewed or the variance grows with the mean, consider $\log(Y)$ or $\sqrt{Y}$.
+If the relationship is curved, consider adding a quadratic term:
+
+$$
+Y_i = \beta_0 + \beta_1 X_i + \beta_2 X_i^2 + \varepsilon_i
+$$
+
+_Our decision and reasoning._
+
+## Correlation & multicollinearity
+
+```{r}
+#| label: correlation
+
+num_vars <- dat[, c("y", "x1", "x2")]
+round(cor(num_vars), 2)
+pairs(num_vars)
+```
+
+The variance inflation factor for predictor $j$ is
+
+$$
+\text{VIF}_j = \frac{1}{1 - R_j^2},
+$$
+
+where $R_j^2$ comes from regressing $X_j$ on the other predictors. Values above about 10 suggest serious multicollinearity.
+
+_Comments._
+
+## Simple linear regressions
+
+Model: $Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i$, with $\varepsilon_i \overset{iid}{\sim} N(0, \sigma^2)$.
+
+```{r}
+#| label: slr
+
+slr1 <- lm(y ~ x1, data = dat)
+summary(slr1)
+```
+
+```{r}
+#| label: fig-slr-diagnostics
+#| fig-cap: "Diagnostic plots for the simple linear regression of Y on X1."
+
+par(mfrow = c(2, 2))
+plot(slr1)
+```
+
+**Assumption checks:**
+
+- Linearity: _residuals vs. fitted_
+- Constant variance: _scale-location plot_
+- Normality: _Q-Q plot_
+- Independence: _how the data were collected_
+
+**Remedies, if needed:** _..._
+
+# Part B: Deeper Analysis
+
+## Candidate multiple regression models
+
+$$
+Y_i = \beta_0 + \beta_1 X_{i1} + \beta_2 X_{i2} + \beta_3 \,\mathbb{1}\{\text{grp}_i = \text{B}\} + \varepsilon_i
+$$
+
+```{r}
+#| label: mlr
+
+mlr1 <- lm(y ~ x1 + x2 + grp, data = dat)
+summary(mlr1)
+
+# VIF (needs the car package: install.packages("car"))
+if (requireNamespace("car", quietly = TRUE)) car::vif(mlr1)
+```
+
+```{r}
+#| label: fig-mlr-diagnostics
+#| fig-cap: "Diagnostic plots for the candidate multiple regression model."
+
+par(mfrow = c(2, 2))
+plot(mlr1)
+```
+
+## Interactions
+
+_Does the effect of $X_1$ depend on group? Example model:_
+
+```{r}
+#| label: interaction
+
+mlr_int <- lm(y ~ x1 * grp + x2, data = dat)
+summary(mlr_int)
+anova(mlr1, mlr_int)   # partial F-test: is the interaction needed?
+```
+
+## Model comparison
+
+| Model | Predictors | $R^2_{adj}$ | AIC | Notes |
+|-------|------------|-------------|-----|-------|
+| SLR | $X_1$ |  |  |  |
+| MLR 1 | $X_1, X_2$, grp |  |  |  |
+| MLR + interaction | $X_1 \times$ grp, $X_2$ |  |  |  |
+
+## Key findings
+
+_Report inference in text, for example: "Holding the other predictors fixed, a one-unit increase in $X_1$ is associated with a $\hat\beta_1 = 12.35$ increase in $Y$ ($t = 2.78$, $p = 0.032$)."_
+
+# Preliminary Conclusions
+
+_Plain-language takeaways that a non-statistician could follow._
+
+# Limitations
+
+_Data limitations, possible confounders, assumption violations, generalizability._
+
+# AI / LLM Use
+
+_Record any use of AI tools here, for the disclosure required in the final reports._
