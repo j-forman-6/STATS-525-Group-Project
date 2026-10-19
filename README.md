@@ -126,7 +126,7 @@ This downloads the changes teammates have uploaded.
  
 ### 2. Stage ☑️ (the checkboxes)
 **"These are the files I want to save."**
-Tick the **Staged** box next to each file you changed. The status letters mean:
+Tick the **Staged** box next to each file you changed (make sure to save first, I forgot and had to commit twice). The status letters mean:
 - **M**: modified
 - **?**: new file
 - **D**: deleted
