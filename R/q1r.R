@@ -97,7 +97,9 @@ legend("topright", fill = c("grey85", "steelblue"),
 
 par(mfrow = c(1, 1))
 
-
+interaction.plot(q1_data$treatment, q1_data$year, q1_data$yield,
+                 xlab = "Temperature treatment", ylab = "Mean forage yield (g)",
+                 trace.label = "Year")
 "
 I don't know what these do, to be honest. 
 
