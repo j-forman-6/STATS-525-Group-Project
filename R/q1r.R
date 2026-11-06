@@ -57,9 +57,9 @@ par(mfrow = c(2, 2))
 
 # Y: histogram and boxplot of forage yield
 hist(q1_plot$yield, breaks = 20, col = "grey85",
-     main = "Distribution of forage yield", xlab = "Forage yield (g)")
+     main = "Distribution of forage yield", xlab = "Forage yield (g per 0.5 m²)")
 boxplot(q1_plot$yield, horizontal = TRUE, col = "grey85",
-        main = "Boxplot of forage yield", xlab = "Forage yield (g)")
+        main = "Boxplot of forage yield", xlab = "Forage yield (g per 0.5 m²)")
 
 # Categorical predictors: bar charts of how many plots are in each group
 barplot(table(q1_plot$treatment), col = "steelblue",
@@ -74,14 +74,14 @@ par(mfrow = c(1, 3))
 
 # Yield by treatment, with individual points on top
 boxplot(yield ~ treatment, data = q1_plot, col = "grey85",
-        main = "Yield by treatment", xlab = "", ylab = "Forage yield (g)")
+        main = "Yield by treatment", xlab = "", ylab = "Forage yield (g per 0.5 m²)")
 stripchart(yield ~ treatment, data = q1_plot, vertical = TRUE,
            method = "jitter", pch = 16, cex = 0.6,
            col = adjustcolor("steelblue", 0.6), add = TRUE)
 
 # Yield by year
 boxplot(yield ~ year, data = q1_plot, col = "grey85",
-        main = "Yield by year", xlab = "", ylab = "Forage yield (g)")
+        main = "Yield by year", xlab = "", ylab = "Forage yield (g per 0.5 m²)")
 stripchart(yield ~ year, data = q1_plot, vertical = TRUE,
            method = "jitter", pch = 16, cex = 0.6,
            col = adjustcolor("steelblue", 0.6), add = TRUE)
@@ -91,14 +91,14 @@ boxplot(yield ~ treatment + year, data = q1_plot,
         col = rep(c("grey85", "steelblue"), each = 3),
         names = rep(levels(q1_plot$treatment), 2), las = 2,
         main = "Yield by treatment and year", xlab = "",
-        ylab = "Forage yield (g)")
+        ylab = "Forage yield (g per 0.5 m²)")
 legend("topright", fill = c("grey85", "steelblue"),
        legend = levels(q1_plot$year), bty = "n")
 
 par(mfrow = c(1, 1))
 
 interaction.plot(q1_data$treatment, q1_data$year, q1_data$yield,
-                 xlab = "Temperature treatment", ylab = "Mean forage yield (g)",
+                 xlab = "Temperature treatment", ylab = "Mean forage yield (g per 0.5 m²)",
                  trace.label = "Year")
 "
 I don't know what these do, to be honest. 
