@@ -29,9 +29,7 @@ y2 <- data.frame(
   yield     = forage_y2$alfalfa.g + forage_y2$ograss.g
 )
 
-# Year 1 uses codes for treatments, so we are mapping them.
 y1$treatment <- c("Control", "Constant", "Fluctuating")[forage_y1$Trtno]
-# Year 2 has +/- weeds, so we are stripping them.
 y2$treatment <- sub("[+-]weeds", "", y2$treatment)
 
 # Stacked them into one table
@@ -101,21 +99,27 @@ interaction.plot(q1_data$treatment, q1_data$year, q1_data$yield,
                  xlab = "Temperature treatment", ylab = "Mean forage yield (g)",
                  trace.label = "Year")
 "
-I don't know what these do, to be honest. 
+#Formulas
+x <- forage_y1$Plot
+y <- forage_y1$alfalfa.g + forage_y1$ograss.g
 
-x <- forage_y1$x
-y <- forage_y1$y
-beta1_hat <- sum( (x - mean(x))*(y - mean(y)) ) / sum( (x - mean(x))^2 )
-beta0_hat <- mean(y) - beta1_hat*mean(x)
-xbar = mean(x)
-ybar = mean(y)
-yhat = beta0_hat + beta1_hat * x
-SSE = sum((y - yhat)^2)
-xvalues = forage_y1$x
-n = length(xvalues)
-MSE = SSE / (n - 2)
-Sxx = sum((x - xbar)^2)
-SEbeta1hat = sqrt(MSE / Sxx)
+xbar <- mean (x)
+ybar <- mean (y)
+
+Sxx <- sum((x - xbar)^2)
+Sxy <- sum((x - xbar)*(y - ybar))
+
+beta1_hat <- Sxy / Sxx
+beta0_hat <- ybar - beta1_hat*x
+
+yhat <- beta0_hat + beta1_hat*x
+
+SSE <- sum((y - yhat)^2)
+
+n <- length(x)
+MSE <- SSE / (n - 2)
+
+SEbeta1hat <- sqrt(MSE / Sxx)
 "
 
 
