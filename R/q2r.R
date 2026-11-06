@@ -44,9 +44,9 @@ table(q2_data$treatment, q2_data$weedy, q2_data$year)
 # 1. Distributions of Y and each predictor
 par(mfrow = c(2, 2))
 hist(q2_data$yield, breaks = 20, col = "grey85",
-     main = "Distribution of forage yield", xlab = "Forage yield (g)")
+     main = "Distribution of forage yield", xlab = "Forage yield (g per 0.5 m²)")
 boxplot(q2_data$yield, horizontal = TRUE, col = "grey85",
-        main = "Boxplot of forage yield", xlab = "Forage yield (g)")
+        main = "Boxplot of forage yield", xlab = "Forage yield (g per 0.5 m²)")
 barplot(table(q2_data$treatment), col = "steelblue",
         main = "Plots per treatment", ylab = "Count")
 barplot(table(q2_data$weedy), col = "darkolivegreen3",
@@ -57,13 +57,13 @@ par(mfrow = c(1, 1))
 par(mfrow = c(1, 3))
 
 boxplot(yield ~ treatment, data = q2_data, col = "grey85",
-        main = "Yield by treatment", xlab = "", ylab = "Forage yield (g)")
+        main = "Yield by treatment", xlab = "", ylab = "Forage yield (g per 0.5 m²)")
 stripchart(yield ~ treatment, data = q2_data, vertical = TRUE,
            method = "jitter", pch = 16, cex = 0.6,
            col = adjustcolor("steelblue", 0.6), add = TRUE)
 
 boxplot(yield ~ weedy, data = q2_data, col = "grey85",
-        main = "Yield by weed status", xlab = "", ylab = "Forage yield (g)")
+        main = "Yield by weed status", xlab = "", ylab = "Forage yield (g per 0.5 m²)")
 stripchart(yield ~ weedy, data = q2_data, vertical = TRUE,
            method = "jitter", pch = 16, cex = 0.6,
            col = adjustcolor("darkolivegreen4", 0.6), add = TRUE)
@@ -72,7 +72,7 @@ boxplot(yield ~ treatment + weedy, data = q2_data,
         col = rep(c("grey85", "darkolivegreen3"), each = 3),
         names = rep(levels(q2_data$treatment), 2), las = 2,
         main = "Yield by treatment and weed status", xlab = "",
-        ylab = "Forage yield (g)")
+        ylab = "Forage yield (g per 0.5 m²)")
 legend("topright", fill = c("grey85", "darkolivegreen3"),
        legend = levels(q2_data$weedy), bty = "n")
 
@@ -92,6 +92,6 @@ tapply(q2_data$yield, list(q2_data$treatment, q2_data$weedy), mean)
 
 # Interaction plot: non-parallel lines suggest the effect differs by weed status
 interaction.plot(q2_data$treatment, q2_data$weedy, q2_data$yield,
-                 xlab = "Temperature treatment", ylab = "Mean forage yield (g)",
+                 xlab = "Temperature treatment", ylab = "Mean forage yield (g per 0.5 m²)",
                  trace.label = "Weeds")
 
