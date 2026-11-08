@@ -5,6 +5,8 @@ FALSE wont work correctly and col doesnt work here because you need a label for
 every column as well as it wouldnt give you the columns you wanted
 
 "
+# Question 1: How does the effect of temperature treatment on forage yield vary between years with different environmental conditions?
+
 # For question 1 i am combining the data into one table over both years
 # For the plots
 
@@ -100,22 +102,5 @@ par(mfrow = c(1, 1))
 interaction.plot(q1_data$treatment, q1_data$year, q1_data$yield,
                  xlab = "Temperature treatment", ylab = "Mean forage yield (g per 0.5 m²)",
                  trace.label = "Year")
-"
-I don't know what these do, to be honest. 
-
-x <- forage_y1$x
-y <- forage_y1$y
-beta1_hat <- sum( (x - mean(x))*(y - mean(y)) ) / sum( (x - mean(x))^2 )
-beta0_hat <- mean(y) - beta1_hat*mean(x)
-xbar = mean(x)
-ybar = mean(y)
-yhat = beta0_hat + beta1_hat * x
-SSE = sum((y - yhat)^2)
-xvalues = forage_y1$x
-n = length(xvalues)
-MSE = SSE / (n - 2)
-Sxx = sum((x - xbar)^2)
-SEbeta1hat = sqrt(MSE / Sxx)
-"
 
 
