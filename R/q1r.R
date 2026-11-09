@@ -1,12 +1,4 @@
-"
-I Switched the file path from absolute to relative so we can open it as well
-The data file has a header row and 11 columns, so read.table with header = 
-FALSE wont work correctly and col doesnt work here because you need a label for 
-every column as well as it wouldnt give you the columns you wanted
 
-"
-# For question 1 i am combining the data into one table over both years
-# For the plots
 
 forage_y1 <- read.csv("data/Isaacson_Year 1 Forage Yield.csv")
 forage_y2 <- read.csv("data/Isaacson_Year 2 Forage Yield.csv")
@@ -98,6 +90,7 @@ par(mfrow = c(1, 1))
 interaction.plot(q1_data$treatment, q1_data$year, q1_data$yield,
                  xlab = "Temperature treatment", ylab = "Mean forage yield (g per 0.5 m²)",
                  trace.label = "Year")
+
 "
 #Formulas
 x <- forage_y1$Plot
@@ -110,7 +103,7 @@ Sxx <- sum((x - xbar)^2)
 Sxy <- sum((x - xbar)*(y - ybar))
 
 beta1_hat <- Sxy / Sxx
-beta0_hat <- ybar - beta1_hat*x
+beta0_hat <- ybar - beta1_hat*xbar
 
 yhat <- beta0_hat + beta1_hat*x
 
@@ -121,5 +114,6 @@ MSE <- SSE / (n - 2)
 
 SEbeta1hat <- sqrt(MSE / Sxx)
 "
+
 
 
