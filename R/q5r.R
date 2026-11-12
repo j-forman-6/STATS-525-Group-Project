@@ -129,3 +129,5 @@ p_value <- 2 * pt(-abs(t_stat), df = n - 2)
 c(beta0 = beta0_hat, beta1 = beta1_hat, SE_beta1 = SEbeta1hat,
   t = t_stat, p = p_value)
 
+confint(fit5)
+
