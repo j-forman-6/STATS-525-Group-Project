@@ -108,3 +108,4 @@ interaction.plot(q3_data$harvest, q3_data$treatment, q3_data$yield,
                  xlab = "Harvest", ylab = "Mean forage yield (g per 0.5 m²)",
                  trace.label = "Treatment")
 
+confint(fit3)

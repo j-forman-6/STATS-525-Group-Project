@@ -95,3 +95,4 @@ interaction.plot(q2_data$treatment, q2_data$weedy, q2_data$yield,
                  xlab = "Temperature treatment", ylab = "Mean forage yield (g per 0.5 m²)",
                  trace.label = "Weeds")
 
+confint(fit2)

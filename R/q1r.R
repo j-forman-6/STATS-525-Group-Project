@@ -1,4 +1,14 @@
+"
+I Switched the file path from absolute to relative so we can open it as well
+The data file has a header row and 11 columns, so read.table with header = 
+FALSE wont work correctly and col doesnt work here because you need a label for 
+every column as well as it wouldnt give you the columns you wanted
 
+"
+# Question 1: How does the effect of temperature treatment on forage yield vary between years with different environmental conditions?
+
+# For question 1 i am combining the data into one table over both years
+# For the plots
 
 forage_y1 <- read.csv("data/Isaacson_Year 1 Forage Yield.csv")
 forage_y2 <- read.csv("data/Isaacson_Year 2 Forage Yield.csv")
@@ -21,7 +31,9 @@ y2 <- data.frame(
   yield     = forage_y2$alfalfa.g + forage_y2$ograss.g
 )
 
+# Year 1 uses codes for treatments, so we are mapping them.
 y1$treatment <- c("Control", "Constant", "Fluctuating")[forage_y1$Trtno]
+# Year 2 has +/- weeds, so we are stripping them.
 y2$treatment <- sub("[+-]weeds", "", y2$treatment)
 
 # Stacked them into one table
@@ -91,29 +103,5 @@ interaction.plot(q1_data$treatment, q1_data$year, q1_data$yield,
                  xlab = "Temperature treatment", ylab = "Mean forage yield (g per 0.5 m²)",
                  trace.label = "Year")
 
-"
-#Formulas
-x <- forage_y1$Plot
-y <- forage_y1$alfalfa.g + forage_y1$ograss.g
 
-xbar <- mean (x)
-ybar <- mean (y)
-
-Sxx <- sum((x - xbar)^2)
-Sxy <- sum((x - xbar)*(y - ybar))
-
-beta1_hat <- Sxy / Sxx
-beta0_hat <- ybar - beta1_hat*xbar
-
-yhat <- beta0_hat + beta1_hat*x
-
-SSE <- sum((y - yhat)^2)
-
-n <- length(x)
-MSE <- SSE / (n - 2)
-
-SEbeta1hat <- sqrt(MSE / Sxx)
-"
-
-
-
+confint(fit)
